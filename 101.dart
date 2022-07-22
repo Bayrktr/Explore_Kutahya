@@ -31,47 +31,64 @@ class dilSecimiEkrani extends StatelessWidget {
               style: TextStyle(
                   fontStyle: FontStyle.italic,
                   fontSize: 20,
-                  color: Colors.cyanAccent),
+                  color: Colors.white,
+                  decoration: TextDecoration.none),
             ),
             margin: const EdgeInsets.all(10.0),
             width: 250.0,
             height: 50.0,
             decoration: BoxDecoration(
-                color: Colors.grey, borderRadius: BorderRadius.circular(20.0)),
+                color: Colors.lightBlue,
+                borderRadius: BorderRadius.circular(20.0)),
           ),
         ),
         Positioned(
-            top: 100,
-            left: 100,
-            child: Text(
-              "EXPLORE KUTAHYA",
-              style: TextStyle(fontSize: 25, color: Colors.blue),
+            top: 120,
+            left: 90,
+            child: DefaultTextStyle(
+              child: Text("EXPLORE  KUTAHYA"),
+              style: TextStyle(
+                  fontSize: 25,
+                  color: Colors.blue,
+                  fontStyle: FontStyle.italic,
+                  fontWeight: FontWeight.bold),
             )),
         Positioned(
             top: 500,
-            child: Image.asset(
-              'lib/Kaynaklar/anamenu.jpg',
-              cacheWidth: 385,
-              cacheHeight: 250,
+            right: 65,
+            child: Container(
+              decoration: BoxDecoration(
+                border: Border.all(
+                  color: Colors.blue,
+                  width: 4,
+                ),
+              ),
+              child: Image.asset(
+                'lib/Kaynaklar/anamenu.jpg',
+                cacheWidth: 385,
+                cacheHeight: 250,
+              ),
             )),
         Align(
           alignment: Alignment.centerLeft,
-          child: FlatButton(
-              onPressed: () async {
-                dynamic content = await readKutahyaFiles('turkiye');
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => anasayfaIki(
-                              dil: 'turkiye',
-                              files: content,
-                            )));
-              },
-              child: Image.asset(
-                dilKaynak.dilResimler[0],
-                cacheWidth: 60,
-                cacheHeight: 60,
-              )),
+          child: Container(
+            child: FlatButton(
+                onPressed: () async {
+                  dynamic content = await readKutahyaFiles('turkiye');
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => anasayfaIki(
+                                dil: 'turkiye',
+                                files: content,
+                              )));
+                },
+                child: Image.asset(
+                  dilKaynak.dilResimler[0],
+                  cacheWidth: 60,
+                  cacheHeight: 60,
+                )),
+          ),
         ),
         Align(
           alignment: Alignment.center,
@@ -582,7 +599,7 @@ class _tarihiYerler extends State<tarihiYerler> {
             child: ListView.builder(
           itemBuilder: (context, index) {
             return Material(
-              color: Colors.white,
+              color: Colors.blue,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -590,7 +607,7 @@ class _tarihiYerler extends State<tarihiYerler> {
                     height: 180,
                     width: 350,
                     decoration: BoxDecoration(
-                        color: Colors.blueGrey,
+                        color: Colors.white,
                         border: Border.all(
                           color: Colors.black,
                           width: 3,
@@ -605,7 +622,8 @@ class _tarihiYerler extends State<tarihiYerler> {
                                 print(widget.dil);
                                 if (widget.dil != '') {
                                   dynamic content = await fetchFileData(
-                                      metinTurkce.metinturk[index][0],
+                                      deleteSpaceOnWord(
+                                          metinTurkce.metinturk[index][0]),
                                       widget.dil);
                                   print(content);
                                   Navigator.push(
@@ -723,7 +741,7 @@ class _RegisterState extends State<Register> {
                 child: IconButton(
                     onPressed: () async {
                       await player.setAsset(
-                          'lib/${widget.dil}fon/${widget.reIsim}.mp3');
+                          'lib/${widget.dil}fon/${deleteSpaceOnWord(widget.reIsim)}.mp3');
                       player.play();
                     },
                     icon: Icon(Icons.record_voice_over)),
@@ -762,12 +780,13 @@ class _RegisterState extends State<Register> {
                     ),
                   ),
                   Container(
-                    width: 150.0,
-                    height: 100.0,
-                    decoration: BoxDecoration(
-                      color: Colors.purple,
-                    ),
-                    child: RaisedButton(
+                    height: 75,
+                    width: 100,
+                    child: OutlinedButton(
+                      style: OutlinedButton.styleFrom(
+                        backgroundColor: Colors.blue,
+                        side: BorderSide(color: Colors.black, width: 4),
+                      ),
                       onPressed: () {
                         launchURL(widget.url);
                       },
@@ -778,7 +797,7 @@ class _RegisterState extends State<Register> {
                             color: Colors.black,
                           )),
                     ),
-                  ),
+                  )
                 ],
               ),
             ),
@@ -787,6 +806,16 @@ class _RegisterState extends State<Register> {
       ),
     );
   }
+}
+
+deleteSpaceOnWord(word) {
+  String otherWord = "";
+  List<String> words = word.toString().split(" ");
+  for (String x in words) {
+    otherWord += x;
+  }
+  print(otherWord);
+  return otherWord;
 }
 
 readKutahyaFiles(dil) async {
@@ -917,62 +946,62 @@ class arkaPlanYazilari {
 class metinTurkce {
   static var metinturk = [
     [
-      'UluCami',
+      'Ulu Cami',
       'lib/Kaynaklar/UluCami/UluCamiResim.jpg',
       'https://www.google.com/maps/dir/39.418952, 29.986621/kutahya+ulu+cami/@39.4269732,29.9483725,14z/data=!3m1!4b1!4m9!4m8!1m1!4e1!1m5!1m1!1s0x14c94809b50210a3:0xf5367936e8e53ff8!2m2!1d29.9758333!2d39.4172222',
     ],
     [
-      'DonenlerCami',
+      'Donenler Cami',
       'lib/Kaynaklar/DonenlerCami/DonenlerCamiResim.jpg',
       'https://www.google.com/maps/dir/39.418952, 29.986621/kutahya+donenler+cami/@39.4269732,29.9483725,14z/data=!3m1!4b1!4m9!4m8!1m1!4e1!1m5!1m1!1s0x14c94809a968f0c1:0x5894904fab71aedf!2m2!1d29.9763075!2d39.4173277?hl=tr'
     ],
     [
-      'VacidiyeMedresesi',
+      'Vacidiye Medresesi',
       'lib/Kaynaklar/VacidiyeMedresesi/VacidiyeMedresesiResim.jpg',
       'https://www.google.com/maps/dir/39.418952, 29.986621/k%C3%BCtahya+vacidiye+medresesi/@39.4269732,29.9483725,14z/data=!3m1!4b1!4m9!4m8!1m1!4e1!1m5!1m1!1s0x14c9486d6ceb6865:0x5fd1628a25104b91!2m2!1d29.9759574!2d39.4169305'
     ],
     [
-      'YakupBeyMedresesi',
+      'YakupBey Medresesi',
       'lib/Kaynaklar/YakupBeyMedresesi/YakupBeyMedresesiResim.jpg',
       ''
     ],
     [
-      'RustemPasaMedresesi',
+      'RustemPasa Medresesi',
       'lib/Kaynaklar/RustemPasaMedresesi/RustemPasaMedresesiResim.jpg',
       'https://www.google.com/maps/dir/39.418952, 29.986621/k%C3%BCtahya+r%C3%BCstem+pa%C5%9Fa+medresesi/@39.4291345,29.9488596,14z/data=!3m1!4b1!4m9!4m8!1m1!4e1!1m5!1m1!1s0x14c9480c72dfc6d1:0x6d2bfc66e53181f3!2m2!1d29.9803483!2d39.4193222?hl=tr',
     ],
     [
-      'HisarBeyCami',
+      'HisarBey Cami',
       'lib/Kaynaklar/HisarBeyCami/HisarBeyCamiResim.jpg',
       'https://www.google.com/maps/dir/39.418952, 29.986621/hisarbey+cami+kutahya/@39.3097255,28.8592477,9z/data=!3m1!4b1!4m9!4m8!1m1!4e1!1m5!1m1!1s0x14c8220491e48665:0xfa66bd925f20ce43!2m2!1d28.772506!2d39.135646'
     ],
     [
-      'KaragozAhmetPasaCami',
+      'KaragozAhmetPasa Cami',
       'lib/Kaynaklar/KaragozAhmetPasaCami/KaragozAhmetPasaCamiResim.jpg',
       'https://www.google.com/maps/dir/39.418952, 29.986621/karag%C3%B6z+ahmet+pa%C5%9Fa+camii+k%C3%BCtahya/@39.4269732,29.9494615,14z/data=!3m1!4b1!4m9!4m8!1m1!4e1!1m5!1m1!1s0x14c9480c1bbcedaf:0x6c9bf6004865499a!2m2!1d29.9808243!2d39.418309?hl=tr'
     ],
     [
-      'AliPasaCami',
+      'AliPasa Cami',
       'lib/Kaynaklar/AliPasaCami/AliPasaCamiResim.jpg',
       'https://www.google.com/maps/dir/39.418952, 29.986621/Alipa%C5%9Fa,+K%C3%BCtahya+Ali+Pa%C5%9Fa+Camii,+Karag%C3%B6zpa%C5%9Fa+Sk+No:18,+43020+K%C3%BCtahya+Merkez%2FK%C3%BCtahya/@39.4273177,29.9504959,14z/data=!3m1!4b1!4m12!4m11!1m3!2m2!1d29.95236!2d39.43689!1m5!1m1!1s0x14c9480dbc7a3867:0x553e4fc7f5f5972d!2m2!1d29.9837108!2d39.418824!3e2'
     ],
     [
-      'YesilCami',
+      'Yesil Cami',
       'lib/Kaynaklar/YesilCami/YesilCamiResim.jpg',
       'https://www.google.com/maps/dir/39.418952, 29.986621/Y%C4%B1ld%C4%B1r%C4%B1m+Beyaz%C4%B1t,+K%C3%BCtahya+Ye%C5%9Fil+Cami,+43300+Tav%C5%9Fanl%C4%B1%2FK%C3%BCtahya/@39.492482,29.4429225,10z/data=!3m1!4b1!4m12!4m11!1m3!2m2!1d29.95236!2d39.43689!1m5!1m1!1s0x14c974babcde5c69:0x59d1793c6d6e87e2!2m2!1d29.4979162!2d39.5492625!3e2?hl=tr'
     ],
     [
-      'HidirlikMescidi',
+      'Hidirlik Mescidi',
       'lib/Kaynaklar/HidirlikMescidi/HidirlikMescidiResim.jpg',
       'https://www.google.com/maps/dir/39.418952, 29.986621/k%C3%BCtahya+h%C4%B1d%C4%B1rl%C4%B1k+mescidi/@39.4255344,29.9530106,14z/data=!3m1!4b1!4m9!4m8!1m1!4e1!1m5!1m1!1s0x14c94807ce1b6ead:0x8ac0b3fbbb55f26!2m2!1d29.9764069!2d39.4138001'
     ],
     [
-      'KutahyaKalesi',
+      'Kutahya Kalesi',
       'lib/Kaynaklar/KutahyaKalesi/KutahyaKalesiResim.jpg',
       'https://www.google.com/maps/dir/39.418952, 29.986621/Maruf,+K%C3%BCtahya+Kalesi,+43050+K%C3%BCtahya+Merkez%2FK%C3%BCtahya/@39.4275403,29.9455707,14z/data=!3m1!4b1!4m12!4m11!1m3!2m2!1d29.95236!2d39.43689!1m5!1m1!1s0x14c947e3a39bbddf:0x840283b901abb7b9!2m2!1d29.970047!2d39.4190826!3e2?hl=tr'
     ],
     [
-      'CiniliCami',
+      'Cinili Cami',
       'lib/Kaynaklar/CiniliCami/CiniliCamiResim.jpg',
       'https://www.google.com/maps/dir/39.418952, 29.986621/Maltepe,+%C3%87inili+Cami,+Avgano%C4%9Flu+Sk.+No:23,+43100+K%C3%BCtahya+Merkez%2FK%C3%BCtahya/@39.4239843,29.9538017,14z/data=!3m1!4b1!4m12!4m11!1m3!2m2!1d29.95236!2d39.43689!1m5!1m1!1s0x14c94810c75a8323:0xd294e5aea1f5a66a!2m2!1d29.9902429!2d39.4116743!3e2?hl=tr'
     ],
@@ -987,17 +1016,17 @@ class metinTurkce {
       'https://www.google.com/maps/dir/39.418952, 29.986621/k%C3%BCtahya+muvakkithane/@39.4290257,29.9483725,14z/data=!3m1!4b1!4m9!4m8!1m1!4e1!1m5!1m1!1s0x14c9480b9aa2b359:0x542494ed84a5159!2m2!1d29.9771583!2d39.4202904?hl=tr'
     ],
     [
-      'KutahyaLisesi',
+      'Kutahya Lisesi',
       'lib/Kaynaklar/KutahyaLisesi/KutahyaLisesiResim.jpg',
       'https://www.google.com/maps/dir/39.418952, 29.986621/39.4167913,29.9837892/@39.4270063,29.9532137,14z/data=!3m1!4b1!4m7!4m6!1m3!2m2!1d29.95236!2d39.43689!1m0!3e0?hl=tr'
     ],
     [
-      'MacarEvi',
+      'Macar Evi',
       'lib/Kaynaklar/MacarEvi/MacarEviResim.jpg',
       'https://www.google.com/maps/dir/39.418952, 29.986621/macar+evi+k%C3%BCtahya/@39.4269732,29.9483725,14z/data=!3m1!4b1!4m9!4m8!1m1!4e1!1m5!1m1!1s0x14c947e29f17fe67:0xf67a7b53a9c0582a!2m2!1d29.9737786!2d39.4165006?hl=tr'
     ],
     [
-      'HukumetKonagi',
+      'Hukumet Konagi',
       'lib/Kaynaklar/HukumetKonagi/HukumetKonagiResim.jpg',
       'https://www.google.com/maps/dir/39.418952, 29.986621/k%C3%BCtahya+h%C3%BCk%C3%BCmet+kona%C4%9F%C4%B1/@39.4322254,29.9378744,13z/data=!3m1!4b1!4m11!4m10!1m3!2m2!1d29.95236!2d39.43689!1m5!1m1!1s0x14c949883c104ee9:0xb781ccb2d73aca1e!2m2!1d29.9887575!2d39.4239306?hl=tr'
     ]
@@ -1019,39 +1048,39 @@ class metinIngilizce {
       'lib/Kaynaklar/VacidiyeMedresesi/VacidiyeMedresesiResim.jpg',
     ],
     [
-      'YakupBeyMadrasah',
+      'YakupBey Madrasah',
       'lib/Kaynaklar/VacidiyeMedresesi/YakupBeyMedresesiResim.jpg',
     ],
     [
-      'RustemPasaMadrasah',
+      'RustemPasa Madrasah',
       'lib/Kaynaklar/RustemPasaMedresesi/RustemPasaMedresesiResim.jpg',
     ],
     [
-      'HisarBeyMosque',
+      'HisarBey Mosque',
       'lib/Kaynaklar/HisarBeyCami/HisarBeyCamiResim.jpg',
     ],
     [
-      'KaragozAhmetPashaMosque',
+      'KaragozAhmetPasha Mosque',
       'lib/Kaynaklar/KaragozAhmetPasaCami/KaragozAhmetPasaCamiResim.jpg',
     ],
     [
-      'AliPashaMosque',
+      'AliPasha Mosque',
       'lib/Kaynaklar/AliPasaCami/AliPasaCamiResim.jpg',
     ],
     [
-      'YesilMosque',
+      'Yesil Mosque',
       'lib/Kaynaklar/YesilCami/YesilCamiResim.jpg',
     ],
     [
-      'HidirlikMasjid',
+      'Hidirlik Masjid',
       'lib/Kaynaklar/HidirlikMescidi/HidirlikMescidiResim.jpg',
     ],
     [
-      'KutahyaCastle',
+      'Kutahya Castle',
       'lib/Kaynaklar/KutahyaKalesi/KutahyaKalesiResim.jpg',
     ],
     [
-      'TileMosque',
+      'Tile Mosque',
       'lib/Kaynaklar/CiniliCami/CiniliCamiResim.jpg',
     ],
     [
@@ -1063,15 +1092,15 @@ class metinIngilizce {
       'lib/Kaynaklar/Muvakkithane/MuvakkithaneResim.jpg',
     ],
     [
-      'KutahyaHighSchool',
+      'Kutahya HighSchool',
       'lib/Kaynaklar/KutahyaLisesi/KutahyaLisesiResim.jpg',
     ],
     [
-      'HungarianHouse',
+      'Hungarian House',
       'lib/Kaynaklar/MacarEvi/MacarEviResim.jpg',
     ],
     [
-      'GovernmentMansion',
+      'Government Mansion',
       'lib/Kaynaklar/HukumetKonagi/HukumetKonagiResim.jpg',
     ]
   ];
